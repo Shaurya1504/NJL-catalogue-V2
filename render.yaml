@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: njl-catalogue
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PARQUET_BLOB_URL
+        sync: false          # set this manually in Render dashboard — keep it secret
+      - key: REFRESH_INTERVAL_MINUTES
+        value: "30"
+      - key: REFRESH_SECRET
+        sync: false          # optional — set to protect the /api/refresh endpoint
+    healthCheckPath: /api/health
